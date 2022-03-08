@@ -2,23 +2,26 @@
     "players":[
         {
             "name": "TestUser1",
-            "hp": 120,
             "maxHp": 200,
+            "hp": 200,
+            "maxGg": 150,
             "gg": 81,
             "loot": "example loot"
         },
         {
             "name": "TestUser2",
-            "hp": 100,
             "maxHp": 200,
-            "gg": 53,
+            "hp": 60,
+            "maxGg": 200,
+            "gg": 50,
             "loot": "example loot"
         },
         {
             "name": "TestUser3",
-            "hp": 130,
             "maxHp": 200,
-            "gg": 53,
+            "hp": 30,
+            "maxGg": 150,
+            "gg": 60,
             "loot": "example loot"
         }
     ]
