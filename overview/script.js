@@ -11,7 +11,7 @@ function readTextFile(file, callback) {
 }
 
 readTextFile("input.json", function(text){
-  var data = JSON.parse(text); //parse JSON
+  var data = JSON.parse(text); 
   console.log(data);
   for (var player of data.players) {
     console.log(player)
@@ -20,49 +20,67 @@ readTextFile("input.json", function(text){
 });
 
 function appendPlayers(player){
-    var playerHeaderName = document.createElement("h1");
+    var playerHeaderName = document.createElement("h2");
     var playerName = document.createTextNode(player.name + ":");
     playerHeaderName.appendChild(playerName);
 
     var playerHpProgressBar = addHpBar(player)
     var playerGgProgressBar = addGgBar(player)
 
-    var playerHeaderLoot = document.createElement("h3");
-    var playerLoot = document.createTextNode("Loot: " + player.loot);
-    playerHeaderLoot.appendChild(playerLoot);
-    
+    if(player.loot !== undefined){
+      var playerHeaderLoot = document.createElement("h3");
+      var playerLoot = document.createTextNode("Loot: " + player.loot);
+      playerHeaderLoot.appendChild(playerLoot);
+    }
+
     element = document.getElementById("first").appendChild(playerHeaderName)
     element = document.getElementById("first").appendChild(playerHpProgressBar)
 
     var test = document.createElement("h3");
     element = document.getElementById("first").appendChild(test)
     element = document.getElementById("first").appendChild(playerGgProgressBar)
-    element = document.getElementById("first").appendChild(playerHeaderLoot)
+
+    if(player.loot !== undefined){
+      element = document.getElementById("first").appendChild(playerHeaderLoot)
+    }
 }
 
 function addHpBar(player){
-  var playerHpProgressBar = document.createElement("div")
-  playerHpProgressBar.style = "width: 50%; background-color: grey"
-
-  var playerHpBar = document.createElement("div")
-  playerHpBar.style = " width: "+calculateLifeProzent(player.maxHp, player.hp)+"%; height: 30px; background-color: green"
-  playerHpProgressBar.appendChild(playerHpBar)
-  playerHpBar.textContent = player.hp + "/" + player.maxHp
+  let playerHpProgressBar = document.createElement("div")
+  let percentage = calculateLifePercentage(player.maxHp, player.hp)
+  let color = calculateColorForHp(percentage)
+  playerHpProgressBar.style = "width: 50%; height: 30px; line-height: 30px; text-align: center; background-image: linear-gradient(90deg, "+color+" 0%, "+ color + " "+ percentage + "%, grey "+percentage+"%, grey 100%)"
+  playerHpProgressBar.textContent = player.hp + "/" + player.maxHp
   return playerHpProgressBar
 }
 
 function addGgBar(player){
-  var playerHpProgressBar = document.createElement("div")
-  var text = document.createElement("div")
-  playerHpProgressBar.style = "width: 50%; background-color: grey"
-
-  var playerHpBar = document.createElement("div")
-  playerHpBar.style = " width: "+calculateLifeProzent(player.maxGg, player.gg)+"%; height: 30px; background-color: orange"
-  playerHpProgressBar.appendChild(playerHpBar)
-  playerHpBar.textContent = player.hp + "/" + player.maxHp
-  return playerHpProgressBar
+  let playerGgProgressBar = document.createElement("div")
+  let percentage = calculateLifePercentage(player.maxGg, player.gg)
+  let color = calculateColorForGg(percentage)
+  playerGgProgressBar.style = "width: 50%; height: 30px; line-height: 30px; text-align: center; background-image: linear-gradient(90deg, "+color+" 0%, "+ color + " "+percentage+"%, grey "+percentage+"%, grey 100%)"
+  playerGgProgressBar.textContent = player.gg + "/" + player.maxGg
+  return playerGgProgressBar
 }
 
-function calculateLifeProzent(max, current){
+function calculateLifePercentage(max, current){
   return (current / max)*100
+}
+
+function calculateColorForHp(percentage){
+    if(percentage >= 25){
+      return "green"
+    } else if(percentage >= 15){
+        return "orange"
+    } else {
+      return "red"
+    }
+}
+
+function calculateColorForGg(percentage){
+  if(percentage >= 25){
+    return "blue"
+  } else {
+    return "darkblue"
+  }
 }
